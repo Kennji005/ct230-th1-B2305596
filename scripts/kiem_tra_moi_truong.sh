@@ -81,9 +81,11 @@ else
 fi
 
 # 5. Cổng của học phần
-# TODO(TH1-1): cảnh báo nếu các cổng 8080 8081 8082 8083 8090 8091 8180 8761 8888 đang bận
-#   (gợi ý: mở được kết nối tới /dev/tcp/127.0.0.1/<cổng> nghĩa là cổng đang bận; dùng hàm canh_bao)
-
+# TH1-1: Kiểm tra các cổng bận (8080 8081 8082 8083 8090 8091 8180 8761 8888)
+PORTS=(8080 8081 8082 8083 8090 8091 8180 8761 8888)
+for port in "${PORTS[@]}"; do
+    (echo > /dev/tcp/127.0.0.1/$port) >/dev/null 2>&1 && canh_bao_cong_dang_ban "$port"
+done
 if [ "$loi" -eq 0 ]; then echo "== Môi trường đạt yêu cầu =="
 else echo "== Còn mục [LỖI] — sửa theo hướng dẫn rồi chạy lại =="; fi
 exit $loi
